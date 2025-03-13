@@ -40,8 +40,8 @@ jobs:
             text: "Pull request *${{ github.event.action }}* by *<https://github.com/${{ github.actor }}|${{ github.actor }}>*"
             attachments:
               - color: "${{ github.event.pull_request.merged == true && '6e42c1' || github.event.action == 'closed' && github.event.pull_request.merged == false && 'cb2432' || github.event.action == 'reopened' && '36a64e' || '8B008B' }}"
-                text:  "*#${{ github.event.pull_request.number }}: <${{ github.event.pull_request.html_url }}|${{ github.event.pull_request.title }}>*"
-                footer: "<https://github.com/GlobalWebIndex/infra/tree/master/terraform/ml-cloud|GlobalWebIndex/infra/ml-cloud>"
+                text: "Pull request *${{ github.event.action }}* by <https://github.com/${{ github.actor }}|${{ github.actor }}>"
+                footer: "<https://github.com/${{ github.repository }}|${{ github.repository }}>"
                 footer_icon: "https://slack-imgs.com/?c=1&o1=wi32.he32.si&url=https%3A%2F%2Fslack.github.com%2Fstatic%2Fimg%2Ffavicon-neutral.png"
                 ts: ${{ env.current_timestamp }}
                 
