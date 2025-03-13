@@ -1,0 +1,51 @@
+name: Notify ML team for opened PRs
+
+on:
+  pull_request:
+    paths:
+      - 'terraform/ml-cloud/**'
+    types:
+      - opened
+      - reopened
+      - closed
+
+jobs:
+  notify-slack:
+    runs-on: ${{ fromJSON(vars.GWI_DEFAULT_RUNNERS) }}
+    container:
+      image: eu.gcr.io/gwi-host-net/ubuntu:act-latest
+      credentials:
+        username: _json_key
+        password: ${{ secrets.SA_GWI_HOST_NET }}
+    steps:
+      - name: Get current date as Unix timestamp
+        id: timestamp
+        run: echo "current_timestamp=$(date +%s).000" >> $GITHUB_ENV
+
+      - name: Determine Slack Channel Dynamically
+        id: slack_channel
+        run: |
+           SLACK_CHANNEL="C04LW77CQB1"
+           echo "SLACK_CHANNEL=$SLACK_CHANNEL" >> $GITHUB_ENV
+
+          # Check if files in the PR are from the 'terraform/data-cloud' directory:
+          # if [[ "${{ github.event.pull_request.head.ref }}" == *"terraform/data-cloud"* ]]; then
+          # SLACK_CHANNEL=""  # Slack channel for data-cloud team
+          # fi
+
+      - name: Send Slack Notification
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          errors: true
+          method: chat.postMessage
+          token: ${{ secrets.ML_SLACK_BOT_TOKEN }}
+          payload: |
+            channel: "${{ env.SLACK_CHANNEL }}"
+            text: "Pull request *${{ github.event.action }}* by *<https://github.com/${{ github.actor }}|${{ github.actor }}>*"
+            attachments:
+              - color: "${{ github.event.pull_request.merged == true && '6e42c1' || github.event.action == 'closed' && github.event.pull_request.merged == false && 'cb2432' || github.event.action == 'reopened' && '36a64e' || '8B008B' }}"
+                text:  "*#${{ github.event.pull_request.number }}: <${{ github.event.pull_request.html_url }}|${{ github.event.pull_request.title }}>*"
+                footer: "<https://github.com/GlobalWebIndex/infra/tree/master/terraform/ml-cloud|GlobalWebIndex/infra/ml-cloud>"
+                footer_icon: "https://slack-imgs.com/?c=1&o1=wi32.he32.si&url=https%3A%2F%2Fslack.github.com%2Fstatic%2Fimg%2Ffavicon-neutral.png"
+                ts: ${{ env.current_timestamp }}
+                
