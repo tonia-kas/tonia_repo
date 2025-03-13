@@ -3,7 +3,7 @@ name: Notify ML team for opened PRs
 on:
   pull_request:
     paths:
-      - 'terraform/ml-cloud/**'
+      - 'test/**'
     types:
       - opened
       - reopened
