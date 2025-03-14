@@ -8,7 +8,7 @@ terraform {
   }
 }
 
-locals {
+locals {  
   flattened_role_member_combinations = flatten([
     for role, members in var.role_and_members_bindings : [
       for member in members : {
@@ -29,6 +29,10 @@ resource "google_bigquery_table_iam_member" "table_iam_member" {
   role       = each.value.role
   member     = each.value.member
 }
+
+
+
+
 
 
 
