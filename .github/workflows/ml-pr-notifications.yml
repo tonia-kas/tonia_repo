@@ -2,8 +2,6 @@ name: Notify ML team for opened PRs
 
 on:
   pull_request:
-    paths:
-      - 'test/**'
     types:
       - opened
       - reopened
@@ -19,7 +17,7 @@ jobs:
         run: echo "current_timestamp=$(date +%s).000" >> $GITHUB_ENV
       
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 2 
 
