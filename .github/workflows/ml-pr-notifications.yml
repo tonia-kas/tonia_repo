@@ -26,13 +26,15 @@ jobs:
         run: |
            SLACK_CHANNEL=""
            git fetch origin ${{ github.event.pull_request.base.ref }} --depth=1
-           CHANGED_FILES=$(git diff --name-only origin/${{ github.event.pull_request.base.ref }} ${{ github.event.pull_request.head.sha }})
-           
+           git fetch origin ${{ github.event.pull_request.head.ref }} --depth=1
+
+           CHANGED_FILES=$(git diff --name-only origin/${{ github.event.pull_request.base.ref }} origin/${{ github.event.pull_request.head.ref }})
+
            if echo "$CHANGED_FILES" | grep -q '^test/'; then
             SLACK_CHANNEL="C04LW77CQB1"
            fi 
 
-           if [[ "${{ github.event.pull_request.merged }}" == "true" && ( "$CHANGED_FILES" =~ ^test/ || "${{ github.event.pull_request.head.ref }}" =~ "test" ) ]]; then
+           if [[ "${{ github.event.pull_request.merged }}" == "true" && "$CHANGED_FILES" =~ ^test/ ]]; then
             SLACK_CHANNEL="C04LW77CQB1"
            fi
 
