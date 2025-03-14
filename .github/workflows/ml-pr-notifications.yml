@@ -23,22 +23,17 @@ jobs:
         with:
           fetch-depth: 2 
 
-
       - name: Determine Slack Channel Dynamically
         id: slack_channel
         run: |
            SLACK_CHANNEL=""
            git fetch origin ${{ github.event.pull_request.base.ref }} --depth=1
            CHANGED_FILES=$(git diff --name-only origin/${{ github.event.pull_request.base.ref }} ${{ github.event.pull_request.head.sha }})
+           
            if echo "$CHANGED_FILES" | grep -q '^test/'; then
             SLACK_CHANNEL="C04LW77CQB1"
            fi 
            echo "SLACK_CHANNEL=$SLACK_CHANNEL" >> $GITHUB_ENV
-
-          # Check if files in the PR are from the 'terraform/data-cloud' directory:
-          # if [[ "${{ github.event.pull_request.head.ref }}" == *"terraform/data-cloud"* ]]; then
-          # SLACK_CHANNEL=""  # Slack channel for data-cloud team
-          # fi
 
       - name: Send Slack Notification
         uses: slackapi/slack-github-action@v2.0.0
@@ -48,7 +43,7 @@ jobs:
           token: ${{ secrets.ML_SLACK_BOT_TOKEN }}
           payload: |
             channel: "${{ env.SLACK_CHANNEL }}"
-            text: "Pull request *${{ github.event.pull_request.merged == true && 'merged' || github.event.action }}* by <https://github.com/${{ github.actor }}|${{ github.actor }}>"
+            text: "Pull request *${{ github.event.pull_request.merged == true && 'merged' || github.event.action }}* by *${{ github.actor }}*"
             attachments:
               - color: "${{ github.event.pull_request.merged == true && '6e42c1' || github.event.action == 'closed' && github.event.pull_request.merged == false && 'cb2432' || github.event.action == 'reopened' && '36a64e' || '8B008B' }}"
                 text:  "*#${{ github.event.pull_request.number }}: <${{ github.event.pull_request.html_url }}|${{ github.event.pull_request.title }}>*"
