@@ -32,9 +32,7 @@ jobs:
 
            if echo "$CHANGED_FILES" | grep -q '^test/'; then
             SLACK_CHANNEL="C04LW77CQB1"
-           fi 
-
-           if [[ "${{ github.event.pull_request.merged }}" == "true" && "$CHANGED_FILES" =~ ^test/ ]]; then
+           elif [[ "${{ github.event.pull_request.merged }}" == "true" && "$CHANGED_FILES" =~ ^test/ ]]; then
             SLACK_CHANNEL="C04LW77CQB1"
            fi
 
