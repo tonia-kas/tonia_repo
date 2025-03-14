@@ -17,6 +17,12 @@ jobs:
       - name: Get current date as Unix timestamp
         id: timestamp
         run: echo "current_timestamp=$(date +%s).000" >> $GITHUB_ENV
+      
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2 
+
 
       - name: Determine Slack Channel Dynamically
         id: slack_channel
