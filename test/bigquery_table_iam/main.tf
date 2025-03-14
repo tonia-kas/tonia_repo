@@ -30,3 +30,5 @@ resource "google_bigquery_table_iam_member" "table_iam_member" {
   member     = each.value.member
 }
 
+
+
