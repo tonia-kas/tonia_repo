@@ -32,10 +32,10 @@ jobs:
             SLACK_CHANNEL="C04LW77CQB1"
            fi 
 
-           if [[ "${{ github.event.pull_request.merged }}" == "true" && "$CHANGED_FILES" =~ ^test/ ]]; then
+           if [[ "${{ github.event.pull_request.merged }}" == "true" && ( "$CHANGED_FILES" =~ ^test/ || "${{ github.event.pull_request.head.ref }}" =~ "test" ) ]]; then
             SLACK_CHANNEL="C04LW77CQB1"
            fi
-            
+
            echo "SLACK_CHANNEL=$SLACK_CHANNEL" >> $GITHUB_ENV
 
       - name: Send Slack Notification
