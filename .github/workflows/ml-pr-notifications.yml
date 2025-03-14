@@ -25,14 +25,12 @@ jobs:
         id: slack_channel
         run: |
            SLACK_CHANNEL=""
-           git fetch origin ${{ github.event.pull_request.base.ref }} --depth=1
-           git fetch origin ${{ github.event.pull_request.head.ref }} --depth=1
+           git fetch origin ${{ github.event.pull_request.base.ref }} --depth=2
+           COMMIT_RANGE="${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}"
 
-           CHANGED_FILES=$(git diff --name-only origin/${{ github.event.pull_request.base.ref }} origin/${{ github.event.pull_request.head.ref }})
+            CHANGED_FILES=$(git diff --name-only $COMMIT_RANGE)
 
            if echo "$CHANGED_FILES" | grep -q '^test/'; then
-            SLACK_CHANNEL="C04LW77CQB1"
-           elif [[ "${{ github.event.pull_request.merged }}" == "true" && "$CHANGED_FILES" =~ ^test/ ]]; then
             SLACK_CHANNEL="C04LW77CQB1"
            fi
 
