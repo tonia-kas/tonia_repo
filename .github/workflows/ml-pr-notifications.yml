@@ -22,7 +22,8 @@ jobs:
         id: slack_channel
         run: |
            SLACK_CHANNEL=""
-           CHANGED_FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})
+           git fetch origin ${{ github.event.pull_request.base.ref }} --depth=1
+           CHANGED_FILES=$(git diff --name-only origin/${{ github.event.pull_request.base.ref }} ${{ github.event.pull_request.head.sha }})
            if echo "$CHANGED_FILES" | grep -q '^test/'; then
             SLACK_CHANNEL="C04LW77CQB1"
            fi 
