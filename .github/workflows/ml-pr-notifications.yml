@@ -31,7 +31,7 @@ jobs:
             CHANGED_FILES=$(git diff --name-only $COMMIT_RANGE)
 
            if echo "$CHANGED_FILES" | grep -q '^test/'; then
-            SLACK_CHANNEL="C04LW77CQB1"
+            SLACK_CHANNEL="C07SYL8D0R1"
            fi
 
            echo "SLACK_CHANNEL=$SLACK_CHANNEL" >> $GITHUB_ENV
