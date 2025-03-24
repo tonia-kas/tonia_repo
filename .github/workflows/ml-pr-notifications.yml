@@ -37,7 +37,7 @@ jobs:
             SLACK_CHANNEL="C07SYL8D0R1"
            fi
 
-            if echo "$CHANGED_FILES" | grep -q '^test1/'; then
+           if echo "$CHANGED_FILES" | grep -q '^test1/'; then
             SLACK_CHANNEL="C04LW77CQB1"
            fi
 
