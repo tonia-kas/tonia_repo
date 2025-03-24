@@ -37,6 +37,10 @@ jobs:
             SLACK_CHANNEL="C07SYL8D0R1"
            fi
 
+            if echo "$CHANGED_FILES" | grep -q '^test1/'; then
+            SLACK_CHANNEL="C04LW77CQB1"
+           fi
+
            echo "SLACK_CHANNEL=$SLACK_CHANNEL" >> $GITHUB_ENV
 
       - name: Send Slack Notification
