@@ -2,6 +2,9 @@ name: Notify ML team for opened PRs
 
 on:
   pull_request:
+    paths:
+      - 'test/**'
+      - 'test1/**'
     types:
       - opened
       - reopened
