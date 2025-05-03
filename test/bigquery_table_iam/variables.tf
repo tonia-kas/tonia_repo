@@ -12,6 +12,7 @@ variable "table_id" {
 
 variable "role_and_members_bindings" {
   description = "A map of roles to members."
+  
   type        = map(list(string))
 }
 
