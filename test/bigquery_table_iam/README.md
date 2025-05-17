@@ -40,5 +40,6 @@ Inputs
 * `dataset_id`: The ID of the BigQuery dataset.
 * `table_id`: The ID of the BigQuery table.
 * `role_and_members_bindings`: A map of roles to members.
+* 
 
 
