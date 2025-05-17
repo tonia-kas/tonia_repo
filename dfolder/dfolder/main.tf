@@ -29,7 +29,7 @@ resource "google_bigquery_table_iam_member" "table_iam_member" {
   role       = each.value.role
   member     = each.value.member
 }
-
+ #wish2
 
 
 
