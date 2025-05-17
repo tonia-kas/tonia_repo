@@ -1,12 +1,11 @@
 name: Label PRs from Specific Users
 
 on:
-  pull_request:
+  pull_request_target:
     types: [opened]
 
 permissions:
-  contents: read
-  issues: write   
+  issues: write  
 
 jobs:
   label_team_pr:
