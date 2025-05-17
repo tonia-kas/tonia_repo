@@ -1,0 +1,33 @@
+name: Label PRs from Specific Users
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  label_team_pr:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Add label if PR author is in allowed list
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const author = context.payload.pull_request.user.login;
+
+          // List of usernames in the team
+          const teamUsers = ['tonia-kas']; 
+
+          const labelToAdd = 'devops';
+
+          if (teamUsers.includes(author)) {
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              labels: [labelToAdd],
+            });
+            console.log(`Label "${labelToAdd}" added for "${author}"`);
+          } else {
+            console.log(`User "${author}" is not in the team list. No label added.`);
+          }
