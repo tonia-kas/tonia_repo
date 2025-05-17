@@ -12,22 +12,43 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Print full PR payload (for debug)
+        run: |
+          echo "Event payload:"
+          cat $GITHUB_EVENT_PATH
+
       - name: Add label if PR author is in allowed list
         uses: actions/github-script@v7
         with:
           script: |
+            console.log("🔍 Starting label script...");
+
             const author = context.payload.pull_request.user.login;
+            const repoName = context.repo.repo;
+            const repoOwner = context.repo.owner;
+            const prNumber = context.payload.pull_request.number;
             const teamUsers = ['tonia-kas'];
             const labelToAdd = 'devops';
 
+            console.log(`🧾 Author: ${author}`);
+            console.log(`📂 Repo: ${repoOwner}/${repoName}`);
+            console.log(`🔢 PR Number: ${prNumber}`);
+            console.log(`🎯 Team Users: ${teamUsers.join(', ')}`);
+            console.log(`🏷️ Label to add: ${labelToAdd}`);
+
             if (teamUsers.includes(author)) {
-              await github.rest.issues.addLabels({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.payload.pull_request.number,
-                labels: [labelToAdd],
-              });
-              console.log(`Label "${labelToAdd}" added for "${author}".`);
+              console.log(`✅ "${author}" is in the team list.`);
+              try {
+                await github.rest.issues.addLabels({
+                  owner: repoOwner,
+                  repo: repoName,
+                  issue_number: prNumber,
+                  labels: [labelToAdd],
+                });
+                console.log(`🏷️ Successfully added label "${labelToAdd}" to PR #${prNumber}`);
+              } catch (error) {
+                console.error(`❌ Failed to add label: ${error.message}`);
+              }
             } else {
-              console.log(`User "${author}" is not in the team list. No label added.`);
+              console.log(`🚫 User "${author}" is NOT in the team list. No label added.`);
             }
