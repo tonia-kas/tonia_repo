@@ -4,6 +4,10 @@ on:
   pull_request:
     types: [opened]
 
+permissions:
+  contents: read
+  issues: write   
+
 jobs:
   label_team_pr:
     runs-on: ubuntu-latest
