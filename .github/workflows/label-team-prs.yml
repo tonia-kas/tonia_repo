@@ -5,7 +5,8 @@ on:
     types: [opened]
 
 jobs:
-  label_team_pr:
+  label_devops_team_pr:
+    if: github.actor == 'tonia-kasz' || github.actor == 'tonia-kas'
     runs-on: ubuntu-latest
 
     steps:
