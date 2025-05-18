@@ -6,7 +6,7 @@ on:
 
 jobs:
   label_devops_team_pr:
-    if: github.actor == 'tonia-kasz' || github.actor == 'tonia-kas'
+    if: github.actor == 'tonia-kasz'
     runs-on: ubuntu-latest
 
     steps:
