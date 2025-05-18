@@ -15,7 +15,7 @@ jobs:
           github-token: ${{ secrets.PAT_LABELER }}
           script: |
             const author = context.payload.pull_request.user.login;
-            const teamUsers = ['tonia-kas'];
+            const teamUsers = ['tonia-kasz'];
             const labelToAdd = 'devops';
 
             if (teamUsers.includes(author)) {
